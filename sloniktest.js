@@ -33,9 +33,13 @@ const main = async () => {
 };
 
 function logAccess(req) {
-  const ipAddress = req.ip; // https://stackoverflow.com/questions/29411551/express-js-req-ip-is-returning-ffff127-0-0-1
-  console.log(ipAddress, 'asks for',req.url);
-  return ipAddress;
+  //const ip = req.ip; // https://stackoverflow.com/questions/29411551/express-js-req-ip-is-returning-ffff127-0-0-1
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; // https://stackoverflow.com/a/39473073
+  if (ip.substr(0, 7) == "::ffff:") {
+    ip = ip.substr(7)
+  }
+  console.log(Date().slice(0,24),ip, 'asks for',req.url,'using',req.headers['user-agent']);
+  return ip;
 }
 
 void main();
