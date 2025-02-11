@@ -8,3 +8,8 @@ simple nextjs app with sqlite
 https://krimsonhart.medium.com/how-i-built-my-portfolio-using-next-js-and-sqlite-db-part-2-37595ca4dc40
 https://www.perplexity.ai/search/simple-node-js-webserver-XOOWFX4OSPadYcEnatTIKw
 https://stackoverflow.com/questions/5726729/how-to-parse-json-using-node-js
+
+how to start using knex:
+https://blog.openreplay.com/create-a-node-api-with-knex-and-postgresql/
+no fuck that, what about slonik:
+https://dev.to/gajus/integrating-slonik-with-expressjs-33kn
