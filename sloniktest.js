@@ -9,7 +9,7 @@ const main = async () => {
   const pool = await createPool(postGresURI);
 
   const app = express();
-  const port = 3000;
+  const port = 8993;
 
   app.get('/', (req, res) => {
     res.send('Hello, World!')
@@ -17,9 +17,15 @@ const main = async () => {
   });
 
   app.get('/opinions', async (req, res) => {
-    const opinions = await pool.any(sql.unsafe`SELECT opinion FROM sps.opinions`);
+    const opinions = await pool.any(sql.unsafe`SELECT * FROM sps.opinions`);
+    const stringResponse = JSON.stringify(opinions, (key, value) =>
+        typeof value === 'bigint' // https://github.com/GoogleChromeLabs/jsbi/issues/30
+            ? value.toString()
+            : value // return everything else unchanged
+    );
     logAccess(req);
-    res.json(opinions);
+    res.setHeader('Content-Type', 'application/json'); // https://stackoverflow.com/questions/19696240/proper-way-to-return-json-using-node-or-express
+    res.send(stringResponse);
   });
 
   app.get('/ipv4', (req, res) => {

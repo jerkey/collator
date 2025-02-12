@@ -1,12 +1,11 @@
 {
-  "type": "module",
+  "type":"module",
   "private": true,
   "scripts": {
     "start": "node bin/server.js"
   },
   "dependencies": {
     "express": "^4.21.2",
-    "knex": "^3.1.0",
     "slonik": "^46.4.0"
   }
 }
