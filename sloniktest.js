@@ -17,13 +17,17 @@ const main = async () => {
   });
 
   app.get('/opinions', async (req, res) => {
-    const opinions = await pool.any(sql.unsafe`SELECT * FROM sps.opinions`);
-    const stringResponse = JSON.stringify(opinions, (key, value) =>
-        typeof value === 'bigint' // https://github.com/GoogleChromeLabs/jsbi/issues/30
-            ? value.toString()
-            : value // return everything else unchanged
-    );
     logAccess(req);
+    var opinions = 'unpopulated';
+    var sqlString = 'unpopulated';
+    if ( req.query.subset ) {
+      sqlString = sql.unsafe`SELECT * FROM sps.opinions WHERE OPINION ILIKE ${req.query.subset}`;
+      opinions = await pool.any(sqlString);
+      console.log('safe subset query:',sqlString.values);
+    } else {
+      opinions = await pool.any(sql.unsafe`SELECT * FROM sps.opinions`);
+    }
+    const stringResponse = JSON.stringify(opinions); // , (key, value) => typeof value === 'bigint' ? value.toString() : value);  // https://github.com/GoogleChromeLabs/jsbi/issues/30
     res.setHeader('Content-Type', 'application/json'); // https://stackoverflow.com/questions/19696240/proper-way-to-return-json-using-node-or-express
     res.send(stringResponse);
   });
